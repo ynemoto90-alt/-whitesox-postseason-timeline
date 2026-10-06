@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>White Sox 2026 Postseason Pitching Timeline</title>
+  <style>
+    :root {
+      --bg: #f6f3ee;
+      --paper: #fffdf8;
+      --ink: #1f2933;
+      --muted: #667085;
+      --line: #ded8cd;
+      --sox: #27272a;
+      --accent: #c8102e;
+      --shadow: 0 12px 28px rgba(44, 38, 30, .12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(200, 16, 46, .10), transparent 28rem),
+        linear-gradient(135deg, #f9f7f2, var(--bg));
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 48px);
+      letter-spacing: 0;
+      line-height: 1.04;
+    }
+
+    .sub {
+      max-width: 760px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(88px, 1fr));
+      gap: 10px;
+      min-width: 330px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 248, .8);
+      padding: 12px;
+      text-align: right;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .board {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 248, .68);
+      box-shadow: var(--shadow);
+    }
+
+    .games {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(240px, 1fr));
+      min-width: 1040px;
+    }
+
+    .game {
+      min-height: 720px;
+      padding: 18px;
+      border-right: 1px solid var(--line);
+    }
+
+    .game:last-child {
+      border-right: 0;
+    }
+
+    .game-head {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      margin: -18px -18px 16px;
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 253, 248, .96);
+      backdrop-filter: blur(10px);
+    }
+
+    .series {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      color: #fff;
+      background: var(--sox);
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    .game-title {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.15;
+    }
+
+    .game-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .appearance {
+      position: relative;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      border: 1px solid color-mix(in srgb, var(--player) 28%, var(--line));
+      border-radius: 8px;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--player) 14%, #fff) 0%, var(--paper) 38%);
+      padding: 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, opacity .16s ease;
+      width: 100%;
+    }
+
+    .appearance::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 6px;
+      border-radius: 8px 0 0 8px;
+      background: var(--player);
+    }
+
+    .appearance:hover,
+    .appearance:focus-visible,
+    .appearance.active {
+      transform: translateY(-2px);
+      border-color: var(--player);
+      box-shadow: 0 10px 24px color-mix(in srgb, var(--player) 22%, transparent);
+      outline: none;
+    }
+
+    .appearance.dimmed {
+      opacity: .42;
+    }
+
+    .order {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      margin-top: 2px;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--player);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .player-row {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 850;
+      overflow-wrap: anywhere;
+    }
+
+    .throws {
+      flex: 0 0 auto;
+      border: 1px solid color-mix(in srgb, var(--player) 45%, #fff);
+      border-radius: 999px;
+      background: #fff;
+      color: color-mix(in srgb, var(--player) 74%, #111);
+      padding: 2px 7px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .bar-shell {
+      margin-top: 10px;
+      height: 12px;
+      border-radius: 999px;
+      background: #ebe5db;
+      overflow: hidden;
+    }
+
+    .bar {
+      width: calc(var(--pitches) / 90 * 100%);
+      max-width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--player), color-mix(in srgb, var(--player) 54%, #fff));
+    }
+
+    .strike-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .panel {
+      position: sticky;
+      top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 248, .92);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-top {
+      padding: 18px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--selected, #27272a) 82%, #111), #242124);
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .panel h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.08;
+    }
+
+    .pill {
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .16);
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .panel-sub {
+      margin: 8px 0 0;
+      color: rgba(255, 255, 255, .78);
+      font-size: 13px;
+    }
+
+    .total-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .total {
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .13);
+      padding: 10px;
+    }
+
+    .total strong {
+      display: block;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .total span {
+      color: rgba(255, 255, 255, .72);
+      font-size: 11px;
+    }
+
+    .detail {
+      padding: 14px 18px 18px;
+    }
+
+    .detail h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+    }
+
+    .history {
+      display: grid;
+      gap: 8px;
+    }
+
+    .history-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .history-game {
+      font-weight: 800;
+    }
+
+    .history-meta {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .history-stat {
+      color: #111827;
+      text-align: right;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .legend button {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 6px 9px;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 12px;
+      transition: border-color .16s ease, transform .16s ease;
+    }
+
+    .legend button:hover,
+    .legend button:focus-visible {
+      border-color: var(--dot);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--dot);
+    }
+
+    .note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .page {
+        padding: 18px;
+      }
+
+      .hero,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        min-width: 0;
+      }
+
+      .panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        padding: 12px;
+      }
+
+      .summary {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .metric {
+        text-align: left;
+      }
+
+      .games {
+        min-width: 920px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Chicago White Sox / 2026 Postseason</p>
+        <h1>継投順タイムライン</h1>
+        <p class="sub">WCとALDSの各試合について、ホワイトソックス投手の登板順・投球回・投球数を縦タイムラインで表示。投手カードをタップすると、その投手の全登板が同時にハイライトされます。</p>
+      </div>
+      <div class="summary" aria-label="postseason summary">
+        <div class="metric"><strong>4</strong><span>対象試合</span></div>
+        <div class="metric"><strong>19</strong><span>延べ登板</span></div>
+        <div class="metric"><strong>589</strong><span>総投球数</span></div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="board" aria-label="pitching timeline">
+        <div class="games" id="games"></div>
+      </div>
+
+      <aside class="panel" id="panel" style="--selected: #27272a;">
+        <div class="panel-top">
+          <div class="panel-title">
+            <h2 id="panelName">投手を選択</h2>
+            <span class="pill" id="panelThrow">Tap</span>
+          </div>
+          <p class="panel-sub" id="panelSub">カードまたは下の凡例をタップすると、その投手の登板履歴を表示します。</p>
+          <div class="total-grid">
+            <div class="total"><strong id="totalApps">-</strong><span>登板</span></div>
+            <div class="total"><strong id="totalIp">-</strong><span>投球回</span></div>
+            <div class="total"><strong id="totalPitches">-</strong><span>投球数</span></div>
+          </div>
+        </div>
+        <div class="detail">
+          <h3>登板履歴</h3>
+          <div class="history" id="history">
+            <div class="history-row">
+              <div>
+                <div class="history-game">未選択</div>
+                <div class="history-meta">例：Grant Taylorを選ぶと、WC1 / ALDS1 / ALDS2 が並びます。</div>
+              </div>
+              <div class="history-stat">-</div>
+            </div>
+          </div>
+          <div class="legend" id="legend" aria-label="pitcher legend"></div>
+          <p class="note">IPの「1.1」は1回1/3、「2.2」は2回2/3を意味します。バーは投球数の多さを表します。</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const games = [
+      {
+        id: "WC1",
+        series: "WC",
+        title: "Game 1",
+        date: "9/29 vs Astros",
+        score: "CHW 6 - HOU 3",
+        pitchers: [
+          ["Hagen Smith", "L", "3.0", 38, 28],
+          ["Jordan Hicks", "R", "1.1", 17, 11],
+          ["Sean Newcomb", "L", "1.0", 19, 12],
+          ["David Sandlin", "R", "1.1", 22, 13],
+          ["Grant Taylor", "R", "2.1", 54, 35]
+        ]
+      },
+      {
+        id: "WC2",
+        series: "WC",
+        title: "Game 2",
+        date: "9/30 vs Astros",
+        score: "CHW 7 - HOU 3",
+        pitchers: [
+          ["Sean Burke", "R", "4.0", 72, 48],
+          ["Huascar Brazoban", "R", "0.1", 16, 9],
+          ["Anthony Kay", "L", "0.2", 11, 4],
+          ["Jordan Hicks", "R", "2.0", 21, 13],
+          ["Erick Fedde", "R", "2.0", 34, 20]
+        ]
+      },
+      {
+        id: "ALDS1",
+        series: "ALDS",
+        title: "Game 1",
+        date: "10/3 vs Guardians",
+        score: "CHW 3 - CLE 0",
+        pitchers: [
+          ["Hagen Smith", "L", "2.2", 51, 27],
+          ["Bryan Hudson", "L", "0.1", 6, 3],
+          ["Jordan Hicks", "R", "0.2", 17, 10],
+          ["Anthony Kay", "L", "1.1", 22, 11],
+          ["Grant Taylor", "R", "4.0", 42, 34]
+        ]
+      },
+      {
+        id: "ALDS2",
+        series: "ALDS",
+        title: "Game 2",
+        date: "10/5 vs Guardians",
+        score: "CHW 4 - CLE 3",
+        pitchers: [
+          ["Anthony Kay", "L", "0.1", 17, 8],
+          ["Sean Newcomb", "L", "2.0", 40, 24],
+          ["Sean Burke", "R", "5.1", 83, 53],
+          ["Grant Taylor", "R", "1.1", 7, 7]
+        ]
+      }
+    ];
+
+    const colors = {
+      "Hagen Smith": "#2563eb",
+      "Jordan Hicks": "#dc2626",
+      "Sean Newcomb": "#16a34a",
+      "David Sandlin": "#9333ea",
+      "Grant Taylor": "#ea580c",
+      "Sean Burke": "#0891b2",
+      "Huascar Brazoban": "#be123c",
+      "Anthony Kay": "#65a30d",
+      "Erick Fedde": "#7c3aed",
+      "Bryan Hudson": "#0f766e"
+    };
+
+    const gamesEl = document.getElementById("games");
+    const legendEl = document.getElementById("legend");
+    const panel = document.getElementById("panel");
+    const panelName = document.getElementById("panelName");
+    const panelThrow = document.getElementById("panelThrow");
+    const panelSub = document.getElementById("panelSub");
+    const totalApps = document.getElementById("totalApps");
+    const totalIp = document.getElementById("totalIp");
+    const totalPitches = document.getElementById("totalPitches");
+    const history = document.getElementById("history");
+
+    const allAppearances = [];
+
+    function ipToOuts(ip) {
+      const [whole, frac = "0"] = String(ip).split(".");
+      return Number(whole) * 3 + Number(frac);
+    }
+
+    function outsToIp(outs) {
+      const whole = Math.floor(outs / 3);
+      const rem = outs % 3;
+      return `${whole}.${rem}`;
+    }
+
+    function pct(strikes, pitches) {
+      return `${Math.round((strikes / pitches) * 100)}%`;
+    }
+
+    function createAppearance(game, item, index) {
+      const [name, hand, ip, pitches, strikes] = item;
+      const color = colors[name] || "#52525b";
+      const btn = document.createElement("button");
+      btn.className = "appearance";
+      btn.type = "button";
+      btn.dataset.player = name;
+      btn.style.setProperty("--player", color);
+      btn.style.setProperty("--pitches", pitches);
+      btn.innerHTML = `
+        <div class="order">${index + 1}</div>
+        <div>
+          <div class="player-row">
+            <p class="name">${name}</p>
+            <span class="throws">${hand}HP</span>
+          </div>
+          <div class="line">
+            <span>${ip} IP</span>
+            <span>${pitches}球</span>
+            <span>${strikes} strikes</span>
+          </div>
+          <div class="bar-shell" aria-hidden="true">
+            <div class="bar"></div>
+          </div>
+          <div class="strike-line">
+            <span>登板順 ${index + 1}番手</span>
+            <span>Strike ${pct(strikes, pitches)}</span>
+          </div>
+        </div>
+      `;
+      btn.addEventListener("mouseenter", () => selectPlayer(name));
+      btn.addEventListener("focus", () => selectPlayer(name));
+      btn.addEventListener("click", () => selectPlayer(name));
+      allAppearances.push({ game, name, hand, ip, pitches, strikes, order: index + 1, element: btn });
+      return btn;
+    }
+
+    function renderGames() {
+      games.forEach((game) => {
+        const col = document.createElement("article");
+        col.className = "game";
+        col.innerHTML = `
+          <header class="game-head">
+            <span class="series">${game.series}</span>
+            <h2 class="game-title">${game.title}</h2>
+            <div class="game-meta">
+              <span>${game.date}</span>
+              <strong>${game.score}</strong>
+            </div>
+          </header>
+          <div class="timeline"></div>
+        `;
+        const timeline = col.querySelector(".timeline");
+        game.pitchers.forEach((item, index) => {
+          timeline.appendChild(createAppearance(game, item, index));
+        });
+        gamesEl.appendChild(col);
+      });
+    }
+
+    function renderLegend() {
+      const names = [...new Set(allAppearances.map((a) => a.name))].sort();
+      names.forEach((name) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.style.setProperty("--dot", colors[name] || "#52525b");
+        btn.innerHTML = `<span class="dot"></span>${name}`;
+        btn.addEventListener("click", () => selectPlayer(name));
+        legendEl.appendChild(btn);
+      });
+    }
+
+    function selectPlayer(name) {
+      const selected = allAppearances.filter((a) => a.name === name);
+      if (!selected.length) return;
+      const color = colors[name] || "#52525b";
+      const hand = selected[0].hand;
+      const outs = selected.reduce((sum, a) => sum + ipToOuts(a.ip), 0);
+      const pitches = selected.reduce((sum, a) => sum + a.pitches, 0);
+      const strikes = selected.reduce((sum, a) => sum + a.strikes, 0);
+
+      panel.style.setProperty("--selected", color);
+      panelName.textContent = name;
+      panelThrow.textContent = `${hand}HP`;
+      panelSub.textContent = `${selected.length}登板 / ${outsToIp(outs)} IP / ${pitches}球 / Strike ${pct(strikes, pitches)}`;
+      totalApps.textContent = selected.length;
+      totalIp.textContent = outsToIp(outs);
+      totalPitches.textContent = pitches;
+
+      history.innerHTML = "";
+      selected.forEach((a) => {
+        const row = document.createElement("div");
+        row.className = "history-row";
+        row.innerHTML = `
+          <div>
+            <div class="history-game">${a.game.series} ${a.game.title}</div>
+            <div class="history-meta">${a.game.date} / ${a.order}番手 / ${a.strikes} strikes / Strike ${pct(a.strikes, a.pitches)}</div>
+          </div>
+          <div class="history-stat">${a.ip} IP<br>${a.pitches}球</div>
+        `;
+        history.appendChild(row);
+      });
+
+      allAppearances.forEach((a) => {
+        const match = a.name === name;
+        a.element.classList.toggle("active", match);
+        a.element.classList.toggle("dimmed", !match);
+      });
+    }
+
+    renderGames();
+    renderLegend();
+    selectPlayer("Grant Taylor");
+  </script>
+</body>
+</html>
